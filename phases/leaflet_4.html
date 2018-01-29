@@ -66,7 +66,7 @@
 	}).addTo(map);
 
 
-	var trIllerWFS = L.geoJson(null, {style: myStyle, onEachFeature: showPopup});
+	var trIllerWFS = L.geoJson(null, {style: myStyle, onEachFeature: showPopup}).addTo(map);
 
 	loadWFS(trIllerWFS, 'ab2018:tr_iller');
 

@@ -40,19 +40,6 @@
 		center: [32.9, 39.8],
 		zoom: 5
 	});
-
-	var myStyle = {
-	    "color": "#ff7800",
-	    "fillColor": "#ff7800",
-	    "weight": 5,
-	    "opacity": 0.65
-	};
-
-	function showPopup(feature, layer) {
-	    if (feature.properties && feature.properties.iladi) {
-	        layer.bindPopup(feature.properties.iladi);
-    	    }
-	}
 	
 
 	var roads = L.gridLayer.googleMutant({
@@ -64,62 +51,6 @@
 		transparent: true,
 		format: 'image/png'
 	}).addTo(map);
-
-
-	var trIllerWFS = L.geoJson(null, {style: myStyle, onEachFeature: showPopup});
-
-	loadWFS(trIllerWFS, 'ab2018:tr_iller');
-
-
-	function loadWFS(wfsLayer, wfsLayerTypeName, successCallback) {
-	    console.log("Hello WFS");
-		
-	    var rootUrl = 'http://localhost:8091/geoserver/ab2018/ows';
-	
-	    var defaultParameters = {
-	        service: 'WFS',
-	        version: '1.0.0',
-	        request: 'GetFeature',
-	        typeName: wfsLayerTypeName,
-	        maxFeatures: 10,
-	        outputFormat: 'application/json',
-	        srsName:'EPSG:4326'
-	    };
-	
-	    var parameters = L.Util.extend(defaultParameters);
-	
-	    var wfsUrl = rootUrl + L.Util.getParamString(parameters);
-	    console.log(wfsUrl);
-	
-	    $.ajax({
-	        url: wfsUrl,
-	        success: handleJson
-	    });
-	
-	    function handleJson(data) {
-	        console.log(data);
-	
-	        if (wfsLayer) {
-	            wfsLayer.addData(data);
-	            map.fitBounds(wfsLayer.getBounds());
-	        }
-	
-	        if (successCallback) {
-	            successCallback(data);
-	        }
-	    }
-	}
-
-	var baseMaps = {
-	    "WMS": trIllerWMS
-	};
-
-	var overlayMaps = {
-	    "WFS": trIllerWFS
-	};
-
-	L.control.layers(baseMaps, overlayMaps).addTo(map);
-
 
 </script>
 
